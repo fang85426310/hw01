@@ -1,0 +1,98 @@
+<div class="page-wrapper">
+
+  <section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">探索台北的美麗</h1>
+      <p class="hero-subtitle">走訪古蹟、品味美食、體驗自然，開啟您的台北之旅。</p>
+      <div class="search-bar">
+        <div class="filter-dropdown">
+          <i class="fa-solid fa-list-ul"></i>
+          <select id="category" [(ngModel)]="selectedCategory" (change)="onCategoryChange()" class="form-select">
+            <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container main-content">
+    <section class="results-header">
+      <div class="stats" *ngIf="!isLoading">
+        共找到 <span class="count">{{ totalCount }}</span> 筆景點
+      </div>
+      <div class="view-options">
+        <!-- Future: grid/list view toggle -->
+      </div>
+    </section>
+
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="isLoading">
+      <div class="spinner-wrapper">
+        <div class="spinner"></div>
+      </div>
+      <p>正在為您搜尋精彩景點...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!isLoading && attractions.length === 0">
+      <i class="fa-solid fa-cloud-sun"></i>
+      <h3>暫無相關景點</h3>
+      <p>請嘗試更換分類或稍後再試。</p>
+      <button class="btn-primary" (click)="selectedCategory = ''; loadAttractions()">查看全部景點</button>
+    </div>
+
+    <!-- Attraction Grid -->
+    <section class="attraction-grid" *ngIf="!isLoading && attractions.length > 0">
+      <div class="attraction-card" *ngFor="let attraction of attractions">
+        <div class="card-image">
+          <ng-container *ngIf="attraction.images?.[0]?.src; else noImage">
+            <img [src]="attraction.images[0].src" [alt]="attraction.name" loading="lazy">
+          </ng-container>
+
+          <ng-template #noImage>
+            <div class="text">無圖片</div>
+          </ng-template>
+
+          <!-- 多個 category -->
+          <div class="card-badge-group" *ngIf="attraction.category?.length">
+            <span class="card-badge" *ngFor="let cat of attraction.category">
+              {{ cat.name }}
+            </span>
+          </div>
+
+          <button class="btn-fav-overlay" title="加入最愛">
+            <i class="fa-regular fa-heart"></i>
+          </button>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">{{ attraction.name }}</h3>
+          <div class="card-meta">
+            <span class="location">
+              <i class="fa-solid fa-location-dot"></i> {{ attraction.address | slice:0:15 }}...
+            </span>
+          </div>
+          <p class="card-description">{{ attraction.introduction | slice:0:70 }}...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pagination -->
+    <section class="pagination-section" *ngIf="!isLoading && totalPages > 1">
+      <button class="pagination-btn" [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+
+      <div class="page-numbers">
+        <button *ngFor="let page of pageNumbers" class="page-number-btn" [class.active]="page === currentPage"
+          (click)="onPageChange(page)">
+          {{ page }}
+        </button>
+      </div>
+
+      <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="onPageChange(currentPage + 1)">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </section>
+  </div>
+</div>
