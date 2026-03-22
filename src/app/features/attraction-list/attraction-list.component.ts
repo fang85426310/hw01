@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/core/services/api.service';
 import { Attraction } from 'src/app/core/models/attraction.model';
+import { FavoriteService } from 'src/app/core/services/favorite.service';
 
 @Component({
   selector: 'app-attraction-list',
@@ -33,12 +34,25 @@ export class AttractionListComponent implements OnInit {
     { id: '38', name: '其它' }
   ];
 
-  constructor(private apiService: ApiService) { }
+  constructor(
+    private apiService: ApiService,
+    private favoriteService: FavoriteService
+  ) { }
 
   ngOnInit(): void {
     this.loadAttractions();
   }
+  toggleFavorite(attraction: Attraction): void {
+    if (this.isFavorite(attraction.id)) {
+      this.favoriteService.deleteFavorite(attraction.id);
+    } else {
+      this.favoriteService.addFavorite(attraction);
+    }
+  }
 
+  isFavorite(id: number): boolean {
+    return this.favoriteService.isFavorite(id);
+  }
   loadAttractions(): void {
     this.isLoading = true;
     this.apiService.getAttractions(this.currentPage, this.selectedCategory).subscribe({

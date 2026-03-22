@@ -1,0 +1,84 @@
+<div class="favorite-container">
+  <header class="page-header">
+    <nav class="breadcrumb">
+      <a routerLink="/list" class="back-link">
+        <span class="icon">←</span> 返回景點列表
+      </a>
+    </nav>
+    <div class="title-section">
+      <h1>我的最愛清單 <span>({{ favorites.length }})</span></h1>
+      <p class="subtitle">管理您感興趣的台北旅遊資訊</p>
+    </div>
+
+    <!-- 批次操作欄 -->
+    <div class="batch-action-bar" *ngIf="favorites.length > 0">
+      <div class="selection-status">
+        <label class="custom-checkbox">
+          <input type="checkbox" [checked]="isAllSelected()" (change)="toggleSelectAll()">
+          <span class="box"></span>
+          全選內容
+        </label>
+        <span class="selected-text" *ngIf="selectedIds.size > 0">已選擇 {{ selectedIds.size }} 個項目</span>
+      </div>
+      <button class="btn-batch-delete" *ngIf="selectedIds.size > 0" (click)="deleteSelected()">
+        <span class="btn-icon">🗑️</span> 移除收藏
+      </button>
+    </div>
+  </header>
+
+  <!-- 空狀態顯示 -->
+  <div class="empty-state" *ngIf="favorites.length === 0">
+    <div class="empty-animation">✨</div>
+    <h2>收藏清單空空如也</h2>
+    <p>您還沒有收藏任何景點。快到列表頁探索並儲存您最喜歡的地方吧！</p>
+    <button class="btn btn-cta" routerLink="/list">探索台北景點</button>
+  </div>
+
+  <!-- 收藏列表網格 -->
+  <div class="favorite-grid" *ngIf="favorites.length > 0">
+    <div class="favorite-card" *ngFor="let item of favorites" [class.is-selected]="selectedIds.has(item.id)">
+      <div class="card-image-wrapper">
+        <img [src]="item.images?.[0]?.src || 'https://via.placeholder.com/400x250?text=No+Image'" [alt]="item.name">
+        <div class="card-badge">已收藏</div>
+        <button class="delete-btn" (click)="onDelete(item.id)" title="移除收藏">
+          <span class="btn-icon">×</span>
+        </button>
+      </div>
+
+      <div class="card-body">
+        <h3 class="card-title">{{ item.name }}</h3>
+        <div class="card-info">
+          <p class="info-item">
+            <span class="label-icon">📍</span> 
+            {{ item.address }}
+          </p>
+          <p class="info-item">
+            <span class="label-icon">📞</span> 
+            {{ item.tel || '暫無電話資訊' }}
+          </p>
+        </div>
+        <div class="card-footer">
+          <button class="action-btn edit" (click)="onEdit(item)">
+            <span class="icon">✎</span> 編輯資訊
+          </button>
+          
+          <button class="action-btn select" [class.active]="selectedIds.has(item.id)" (click)="toggleSelect(item.id)">
+            <span class="custom-checkbox no-text">
+              <input type="checkbox" [checked]="selectedIds.has(item.id)" readonly>
+              <span class="box"></span>
+            </span>
+            選取
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 編輯彈窗 -->
+  <app-edit-modal
+    *ngIf="isModalOpen"
+    [attraction]="selectedAttraction"
+    (close)="closeModal()"
+    (save)="onSaveEdit($event)">
+  </app-edit-modal>
+</div>

@@ -12,6 +12,11 @@
             <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
           </select>
         </div>
+        <div class="favorite-nav">
+          <button routerLink="/favorites" class="btn-view-favorites">
+            <i class="fa-solid fa-bookmark"></i> 查看我的最愛
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -61,8 +66,8 @@
             </span>
           </div>
 
-          <button class="btn-fav-overlay" title="加入最愛">
-            <i class="fa-regular fa-heart"></i>
+          <button class="btn-fav-overlay" [class.active]="isFavorite(attraction.id)" (click)="toggleFavorite(attraction)" title="加入最愛">
+            <i [class.fa-solid]="isFavorite(attraction.id)" [class.fa-regular]="!isFavorite(attraction.id)" class="fa-heart"></i>
           </button>
         </div>
         <div class="card-body">

@@ -1,0 +1,33 @@
+<div class="modal-overlay" (click)="onCancel()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>編輯收藏</h2>
+      <button class="close-btn" (click)="onCancel()" aria-label="Close">&times;</button>
+    </div>
+    
+    <div class="modal-body">
+      <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="name">景點名稱 <span class="required">*</span></label>
+          <input type="text" id="name" formControlName="name" placeholder="請輸入景點名稱" [class.is-invalid]="editForm.get('name')?.invalid && editForm.get('name')?.touched">
+          <div class="error-msg" *ngIf="editForm.get('name')?.invalid && editForm.get('name')?.touched">
+            <span *ngIf="editForm.get('name')?.errors?.['required']">此欄位為必填項</span>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="tel">電話</label>
+          <input type="text" id="tel" formControlName="tel" placeholder="請輸入電話" [class.is-invalid]="editForm.get('tel')?.invalid && editForm.get('tel')?.touched">
+          <div class="error-msg" *ngIf="editForm.get('tel')?.invalid && editForm.get('tel')?.touched">
+            <span *ngIf="editForm.get('tel')?.errors?.['pattern']">電話格式不正確（不可含中文）</span>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" (click)="onCancel()">取消</button>
+          <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">儲存並更新</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
