@@ -4,6 +4,16 @@
   margin: 0 auto;
 }
 
+.text {
+  background-color: #5f6368;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 1rem;
+  color: #ffffff;
+}
+
 // 頁首與導覽
 .page-header {
   margin-bottom: 48px;
@@ -118,10 +128,10 @@
   input {
     display: none; // 隱藏原生 checkbox
 
-    &:checked + .box {
+    &:checked+.box {
       background-color: #1890ff;
       border-color: #1890ff;
-      
+
       &::after {
         opacity: 1;
         transform: rotate(45deg) scale(1);
@@ -157,7 +167,9 @@
   }
 
   &.no-text {
-    .box { margin-right: 0; }
+    .box {
+      margin-right: 0;
+    }
   }
 
   &:hover .box {
@@ -273,7 +285,7 @@
     .card-badge {
       position: absolute;
       top: 16px;
-      left: 16px; 
+      left: 16px;
       background: rgba(24, 144, 255, 0.9);
       color: white;
       padding: 6px 14px;
@@ -353,7 +365,7 @@
       margin-top: auto;
       display: flex;
       gap: 12px;
-      
+
       .action-btn {
         flex: 1;
         padding: 12px;
@@ -367,6 +379,7 @@
         align-items: center;
         justify-content: center;
         gap: 8px;
+        word-break: keep-all;
 
         .icon {
           font-size: 1.1rem;
@@ -392,7 +405,7 @@
 
           .custom-checkbox {
             pointer-events: none; // 讓按紐處理點擊
-            
+
             .box {
               margin-right: 4px;
               width: 18px;
@@ -413,7 +426,7 @@
             border-color: #1890ff;
             color: #1890ff;
             box-shadow: 0 4px 12px rgba(24, 144, 255, 0.15);
-            
+
             .custom-checkbox .box {
               background-color: #1890ff;
               border-color: #1890ff;
@@ -432,8 +445,13 @@
 
 // 動畫
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fadeInUp {
@@ -441,6 +459,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -448,9 +467,17 @@
 }
 
 @keyframes floating {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-15px); }
-  100% { transform: translateY(0px); }
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 // 響應式優化
@@ -458,15 +485,15 @@
   .favorite-container {
     padding: 24px 16px;
   }
-  
+
   .page-header {
     margin-bottom: 32px;
-    
+
     .title-section h1 {
       font-size: 2rem;
     }
   }
-  
+
   .favorite-grid {
     grid-template-columns: 1fr;
     gap: 20px;
