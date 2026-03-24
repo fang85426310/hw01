@@ -177,12 +177,12 @@ $transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   // mobile
   @media (min-width: 576px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
   }
 
   // desktop
   @media (min-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
